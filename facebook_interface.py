@@ -32,6 +32,27 @@ def postIds():
         ids += [response['json_data']['data'][i]['id']]
     return ids
 
+#UNTESTED
+#returns friend count
+def friend_count():
+    params = defines.getCreds()
+    endpointParams = dict()
+    endpointParams['access_token'] = params['user_access_token']
+    url = params['endpoint_base'] + 'me/friends'
+    response = makeApiCall(url, endpointParams, params['debug'])
+    return response['summary']['total_count']
+
+#UNTESTED
+#return page follower count
+def follower_count():
+    params = defines.getCreds()
+    endpointParams = dict()
+    endpointParams['access_token'] = params['user_access_token']
+    endpointParams['fields'] = 'follower_count'
+    url = params['endpoint_base'] + params['page_id']
+    response = makeApiCall(url, endpointParams, params['debug'])
+    return response['follower_count']
+
 
 #The number of times any content from your Page or about your Page entered a person's screen.
 #This includes posts, stories, ads, as well other content or information on your Page.
