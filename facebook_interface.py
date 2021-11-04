@@ -6,12 +6,12 @@ def makeApiCall(url, endpointParams, debug='no'):
     response['url'] = url
     response['endpoint_params'] = json.dumps(endpointParams, indent=4)
     response['json_data'] = json.loads(data.content)
-#printing this will help with visualizing json data
-   # response['json_data_pretty'] = json.dumps(response['json_data'], indent=4 )
+# printing this will help with visualizing json data
+    response['json_data_pretty'] = json.dumps(response['json_data'], indent=4 )
 
     return response
 
-#gets page id for Facebook page
+# gets page id for Facebook page
 def pageId():
     params = defines.getCreds()
     endpointParams = dict()
@@ -20,7 +20,7 @@ def pageId():
     response = makeApiCall(url, endpointParams, params['debug'])
     return response['json_data']['data'][0]['id']
 
-#returns a list of all post ids to help get post information
+# returns a list of all post ids to help get post information
 def postIds():
     params = defines.getCreds()
     endpointParams = dict()
@@ -32,30 +32,29 @@ def postIds():
         ids += [response['json_data']['data'][i]['id']]
     return ids
 
-#UNTESTED
-#returns friend count
+
+# returns friend count
 def friend_count():
     params = defines.getCreds()
     endpointParams = dict()
     endpointParams['access_token'] = params['user_access_token']
     url = params['endpoint_base'] + 'me/friends'
     response = makeApiCall(url, endpointParams, params['debug'])
-    return response['summary']['total_count']
+    return response['json_data']['summary']['total_count']
 
-#UNTESTED
-#return page follower count
+
+# return page follower count
 def follower_count():
     params = defines.getCreds()
     endpointParams = dict()
-    endpointParams['access_token'] = params['user_access_token']
-    endpointParams['fields'] = 'follower_count'
+    endpointParams['access_token'] = params['page_access_token']
+    endpointParams['fields'] = 'followers_count'
     url = params['endpoint_base'] + params['page_id']
     response = makeApiCall(url, endpointParams, params['debug'])
-    return response['follower_count']
+    return response['json_data']['followers_count']
 
-
-#The number of times any content from your Page or about your Page entered a person's screen.
-#This includes posts, stories, ads, as well other content or information on your Page.
+# The number of times any content from your Page or about your Page entered a person's screen.
+# This includes posts, stories, ads, as well other content or information on your Page.
 def getImpressions():
     params = defines.getCreds()
     endpointParams = dict()
@@ -74,7 +73,7 @@ def getImpressions():
     return impressions
 
 
-#The number of people who had any content from your Page or about your Page enter their screen.
+# The number of people who had any content from your Page or about your Page enter their screen.
 # This includes posts, stories, check-ins, ads, social information from people who interact with your Page and more.
 def getUniqueImpressions():
     params = defines.getCreds()
@@ -93,7 +92,7 @@ def getUniqueImpressions():
             impressions['days_28'] = response['json_data']['data'][i]['values'][1]['value']
     return impressions
 
-#The number of times your Page's post entered a person's screen. Posts include statuses, photos, links, videos and more.
+# The number of times your Page's post entered a person's screen. Posts include statuses, photos, links, videos and more.
 def getPostImpressions():
     params = defines.getCreds()
     endpointParams = dict()
@@ -111,7 +110,7 @@ def getPostImpressions():
             impressions['days_28'] = response['json_data']['data'][i]['values'][1]['value']
     return impressions
 
-#The number of people who had your Page's post enter their screen. Posts include statuses, photos, links, videos and more.
+# The number of people who had your Page's post enter their screen. Posts include statuses, photos, links, videos and more.
 def getUniquePostImpressions():
     params = defines.getCreds()
     endpointParams = dict()
@@ -129,7 +128,7 @@ def getUniquePostImpressions():
             impressions['days_28'] = response['json_data']['data'][i]['values'][1]['value']
     return impressions
 
-#The number of people who engaged with your Page. Engagement includes any click.
+# The number of people who engaged with your Page. Engagement includes any click.
 def engagedUsers():
     params = defines.getCreds()
     endpointParams = dict()
@@ -148,7 +147,7 @@ def engagedUsers():
     return users
 
 
-
+#
 def pageViews():
     params = defines.getCreds()
     endpointParams = dict()
@@ -167,7 +166,7 @@ def pageViews():
     return views
 
 
-#The number of times people have engaged with your posts through reactions, comments, shares and more.
+# The number of times people have engaged with your posts through reactions, comments, shares and more.
 def totalPostEngagement():
     params = defines.getCreds()
     endpointParams = dict()
@@ -185,7 +184,8 @@ def totalPostEngagement():
             engagements['days_28'] = response['json_data']['data'][i]['values'][1]['value']
     return engagements
 
-#The number of times people took a negative action (e.g., un-liked or hid a post).
+
+# The number of times people took a negative action (e.g., un-liked or hid a post).
 def negativeFeedback():
     params = defines.getCreds()
     endpointParams = dict()
@@ -204,8 +204,8 @@ def negativeFeedback():
     return neg
 
 
-#post likes for a specific post
-#likes for Facebook since they have many positive reactions will be like, love, and wow reactions
+# post likes for a specific post
+# likes for Facebook since they have many positive reactions will be like, love, and wow reactions
 def getPostLikes( postId ):
     params = defines.getCreds()
     endpointParams = dict()
@@ -219,7 +219,7 @@ def getPostLikes( postId ):
     return likes + loves + wows
 
 
-#gets total likes for last num posts
+# gets total likes for last num posts
 def getMultiplePostLikes( num ):
     ids = postIds()
     total = 0
@@ -229,12 +229,18 @@ def getMultiplePostLikes( num ):
 
 
 
+
 id = pageId()
 print('Page id: ' + id)
 pids = postIds()
 print('Post ids:')
 for i in postIds():
     print(i)
+friends = friend_count()
+print('Friends: ' + str(friends))
+
+followers = follower_count()
+print('Followers: ' + str(followers))
 
 impressions = getImpressions()
 print("Total Post Engagement:")
@@ -291,3 +297,4 @@ print(likes)
 likes3 = getMultiplePostLikes(3)
 print('Total likes for last 3 posts:')
 print(likes3)
+
