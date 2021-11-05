@@ -22,3 +22,4 @@ html = requests.get("https://www.linkedin.com/oauth/v2/authorization",
 
 # Print the link to the approval page
 print(html.url)
+# Click the link below to be taken to your redirect page.
