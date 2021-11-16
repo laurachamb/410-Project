@@ -33,16 +33,6 @@ def postIds():
     return ids
 
 
-# returns friend count
-def friend_count():
-    params = defines.getCreds()
-    endpointParams = dict()
-    endpointParams['access_token'] = params['user_access_token']
-    url = params['endpoint_base'] + 'me/friends'
-    response = makeApiCall(url, endpointParams, params['debug'])
-    return response['json_data']['summary']['total_count']
-
-
 # return page follower count
 def follower_count():
     params = defines.getCreds()
@@ -236,8 +226,6 @@ pids = postIds()
 print('Post ids:')
 for i in postIds():
     print(i)
-friends = friend_count()
-print('Friends: ' + str(friends))
 
 followers = follower_count()
 print('Followers: ' + str(followers))
@@ -290,11 +278,10 @@ print('Day: ' + str(neg['day']))
 print('Week: ' + str(neg['week']))
 print('Month: ' + str(neg['days_28']))
 
-likes = getPostLikes('2177748962481695_2780570522199533')
-print('Post likes for post with post id 2177748962481695_2780570522199533: ')
+likes = getPostLikes('1503119803264962_288051243325880')
+print('Post likes for post with post id 1503119803264962_288051243325880: ')
 print(likes)
 
 likes3 = getMultiplePostLikes(3)
 print('Total likes for last 3 posts:')
 print(likes3)
-
