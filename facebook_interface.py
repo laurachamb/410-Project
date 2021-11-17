@@ -1,26 +1,34 @@
 import requests, json, defines
 
+# This functions makes the API calls for facebook using the defines dictionary
+# you pass in the url with endpoint parameters and the requests.get() function issues a get request with those
+# the response dictionary is returned and has four keys
+# keys : 'url' stored the url of the requests
+#       'endpoint_params' stores endpoint parameters in json
+#       'json_data' stores the json representation of the data returned by the get call
+#       'json_data_pretty' stores a nicer representation of the json data, useful for debugging
 def makeApiCall(url, endpointParams, debug='no'):
     data = requests.get(url, endpointParams)
     response = dict()
     response['url'] = url
     response['endpoint_params'] = json.dumps(endpointParams, indent=4)
     response['json_data'] = json.loads(data.content)
-# printing this will help with visualizing json data
     response['json_data_pretty'] = json.dumps(response['json_data'], indent=4 )
 
     return response
 
 # gets page id for Facebook page
+# I stored the ids in defines so there is no need to call this function further
 def pageId():
     params = defines.getCreds()
     endpointParams = dict()
-    endpointParams['access_token'] = params['user_access_token']
-    url = params['endpoint_base'] + 'me/accounts'
+    endpointParams['access_token'] = params['page_access_token']
+    url = params['endpoint_base'] + 'me'
     response = makeApiCall(url, endpointParams, params['debug'])
-    return response['json_data']['data'][0]['id']
+    return response['json_data']['id']
 
 # returns a list of all post ids to help get post information
+# list is sorted from most recent to oldest and stores posts within the last 2 years
 def postIds():
     params = defines.getCreds()
     endpointParams = dict()
@@ -31,6 +39,16 @@ def postIds():
     for i in range(len(response['json_data']['data'])):
         ids += [response['json_data']['data'][i]['id']]
     return ids
+
+
+# returns friend count
+#def friend_count():
+ #   params = defines.getCreds()
+ #   endpointParams = dict()
+ #   endpointParams['access_token'] = params['user_access_token']
+ #   url = params['endpoint_base'] + 'me/friends'
+#    response = makeApiCall(url, endpointParams, params['debug'])
+ #   return response['json_data']['summary']['total_count']
 
 
 # return page follower count
@@ -45,6 +63,10 @@ def follower_count():
 
 # The number of times any content from your Page or about your Page entered a person's screen.
 # This includes posts, stories, ads, as well other content or information on your Page.
+# returns a dictionary with three keys
+# keys: 'day' stores the number of impressions within the last day
+#       'week' stores the number of impressions within the last week
+#       'days_28' stores the number of impressions within the last 28 days
 def getImpressions():
     params = defines.getCreds()
     endpointParams = dict()
@@ -65,6 +87,10 @@ def getImpressions():
 
 # The number of people who had any content from your Page or about your Page enter their screen.
 # This includes posts, stories, check-ins, ads, social information from people who interact with your Page and more.
+# returns a dictionary with three keys
+# keys: 'day' stores the number of unique impressions within the last day
+#       'week' stores the number of unique impressions within the last week
+#       'days_28' stores the number of unique impressions within the last 28 days
 def getUniqueImpressions():
     params = defines.getCreds()
     endpointParams = dict()
@@ -83,6 +109,10 @@ def getUniqueImpressions():
     return impressions
 
 # The number of times your Page's post entered a person's screen. Posts include statuses, photos, links, videos and more.
+# returns a dictionary with three keys
+# keys: 'day' stores the number of post impressions within the last day
+#       'week' stores the number of post impressions within the last week
+#       'days_28' stores the number of post impressions within the last 28 days
 def getPostImpressions():
     params = defines.getCreds()
     endpointParams = dict()
@@ -101,6 +131,10 @@ def getPostImpressions():
     return impressions
 
 # The number of people who had your Page's post enter their screen. Posts include statuses, photos, links, videos and more.
+# returns a dictionary with three keys
+# keys: 'day' stores the number of unqiue post impressions within the last day
+#       'week' stores the number of unique post impressions within the last week
+#       'days_28' stores the number of unique post impressions within the last 28 days
 def getUniquePostImpressions():
     params = defines.getCreds()
     endpointParams = dict()
@@ -119,6 +153,10 @@ def getUniquePostImpressions():
     return impressions
 
 # The number of people who engaged with your Page. Engagement includes any click.
+# returns a dictionary with three keys
+# keys: 'day' stores the number of engaged users within the last day
+#       'week' stores the number of engaged users within the last week
+#       'days_28' stores the number of engaged users within the last 28 days
 def engagedUsers():
     params = defines.getCreds()
     endpointParams = dict()
@@ -137,7 +175,11 @@ def engagedUsers():
     return users
 
 
-#
+# The number of times a Page's profile has been viewed by logged in and logged out people.
+# returns a dictionary with three keys
+# keys: 'day' stores the number of engaged users within the last day
+#       'week' stores the number of engaged users within the last week
+#       'days_28' stores the number of engaged users within the last 28 days
 def pageViews():
     params = defines.getCreds()
     endpointParams = dict()
@@ -157,6 +199,10 @@ def pageViews():
 
 
 # The number of times people have engaged with your posts through reactions, comments, shares and more.
+# returns a dictionary with three keys
+# keys: 'day' stores the number of post engagements within the last day
+#       'week' stores the number of post engagements within the last week
+#       'days_28' stores the number of post engagements within the last 28 days
 def totalPostEngagement():
     params = defines.getCreds()
     endpointParams = dict()
@@ -176,6 +222,10 @@ def totalPostEngagement():
 
 
 # The number of times people took a negative action (e.g., un-liked or hid a post).
+# returns a dictionary with three keys
+# keys: 'day' stores the number of negative reactions within the last day
+#       'week' stores the number of negative reactions within the last week
+#       'days_28' stores the number of negative reactions within the last 28 days
 def negativeFeedback():
     params = defines.getCreds()
     endpointParams = dict()
@@ -194,8 +244,10 @@ def negativeFeedback():
     return neg
 
 
-# post likes for a specific post
+# post likes for a specific post given the post id
+# you can get post ids from postIDs()
 # likes for Facebook since they have many positive reactions will be like, love, and wow reactions
+# returns one value represnting the likes for that post
 def getPostLikes( postId ):
     params = defines.getCreds()
     endpointParams = dict()
@@ -203,13 +255,16 @@ def getPostLikes( postId ):
     endpointParams['access_token'] = params['page_access_token']
     url = params['endpoint_base'] + postId + '/insights'
     response = makeApiCall(url, endpointParams, params['debug'])
+   # print(response['json_data_pretty'])
     likes = response['json_data']['data'][0]['values'][0]['value']
     loves = response['json_data']['data'][1]['values'][0]['value']
     wows = response['json_data']['data'][2]['values'][0]['value']
     return likes + loves + wows
 
 
-# gets total likes for last num posts
+# gets total likes (again like are like, love, or wow reactions on facebook) for last number of posts starting from
+# the most recent
+# number of posts should be passed in
 def getMultiplePostLikes( num ):
     ids = postIds()
     total = 0
@@ -226,6 +281,8 @@ pids = postIds()
 print('Post ids:')
 for i in postIds():
     print(i)
+#friends = friend_count()
+#print('Friends: ' + str(friends))
 
 followers = follower_count()
 print('Followers: ' + str(followers))
