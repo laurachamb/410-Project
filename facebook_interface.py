@@ -1,4 +1,5 @@
-import requests, json, defines
+import requests, json
+from flasktest import defines
 
 # This functions makes the API calls for facebook using the defines dictionary
 # you pass in the url with endpoint parameters and the requests.get() function issues a get request with those
