@@ -1,0 +1,19 @@
+{% extends "index.html" %}
+{% block content %}
+   <div class="facebook">
+     <h1>Facebook API</h1>
+
+     <p>List of page ids:</p>
+     {% for post in posts %}
+    <div><p>{{ post }} </div>
+    {% endfor %}
+
+     <p>Followers: {{ test1 }} </p>
+     <p>Total post engagement: {{ test2 }} </p>
+     <p>Impressions: {{ test3 }} </p>
+     <p>Post Impressions: {{ test4 }} </p>
+     <p>Unique posts: {{ test5 }} </p>
+     <p>Page views: {{ test6 }} </p>
+
+   </div>
+ {% endblock %}

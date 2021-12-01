@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Impact Financial Center Social Media Analytics</title>
-</head>
-<body>
-<h1 style = "text-align:center"> Welcome to the Impact Financial Center Data Analytics</h1>
-<h3 style = "text-align:center"> What data are you interested in seeing?</h3>
-<div style= "text-align:center">
-<select name="sample" onchange="location = this.value;">
-    <option disabled selected value="">Metrics</option>
- <option value="/followers">Followers</option>
- <option value="/likes">Likes</option>
- <option value="/impressions">Impressions</option>
-</select>
-</div>
-</body>
+<html>
+  <body>
+    <header>
+      <div class="container">
+        <h1 class="logo">API menu</h1>
+        <strong><nav>
+          <ul class="menu">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/facebook">Facebook</a></li>
+            <li><a href="/facebook">Instagram</a></li>
+            <li><a href="/facebook">Twitter</a></li>
+            <li><a href="/facebook">Linkedin</a></li>
+          </ul>
+        </nav></strong>
+      </div>
+    </header>
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </body>
+</html>
