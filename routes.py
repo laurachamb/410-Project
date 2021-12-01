@@ -3,8 +3,8 @@ import requests
 import json 
 
 #from flasktest.helper import*
-from flasktest.facebook_interface import*
-from flasktest.defines import*
+from 410-Project.facebook_interface import*
+from 410-Project.defines import*
 
 
 app = Flask(__name__)
