@@ -34,7 +34,17 @@ def facebook():
     info['pimpressions']['day'] = pimpressions['day']
     info['pimpressions']['week'] = pimpressions['week']
     info['pimpressions']['days_28'] = pimpressions['days_28']
-    return render_template('facebook.html', info = info, impressions = impressions)
+
+    mInfo = postIds()
+    info['likes'] = []
+    info['avg_likes'] = 0
+    for i in range(10):
+        l = getPostLikes(mInfo[i]['id'])
+        info['likes'] += [l]
+        info['avg_likes'] += l
+    info['avg_likes'] /= 10
+
+    return render_template('facebook.html', info = info, mInfo = mInfo)
 
 @app.route("/instagram")
 def instagram():
@@ -53,10 +63,25 @@ def instagram():
     info['reach']['day'] = r['day']
     info['reach']['week'] = r['week']
     info['reach']['days_28'] = r['days_28']
-
-
-
-    return render_template('instagram.html', info = info)
+    info['avg_likes'] = 0
+    info['avg_comments'] = 0
+    info['avg_impressions'] = 0
+    info['avg_reach'] = 0
+    info['avg_engagement'] = 0
+    mInfo = mediaInfo()
+    for i in range(10):
+        info['avg_likes'] += mInfo[i]['like_count']
+        info['avg_comments'] += mInfo[i]['comments_count']
+        mInfo[i]['insights'] = postInsights(mInfo[i]['id'])
+        info['avg_impressions'] += mInfo[i]['insights']['impressions']
+        info['avg_reach'] += mInfo[i]['insights']['reach']
+        info['avg_engagement'] += mInfo[i]['insights']['engagement']
+    info['avg_likes'] /= 10
+    info['avg_comments'] /= 10
+    info['avg_impressions'] /= 10
+    info['avg_reach'] /= 10
+    info['avg_engagement'] /= 10
+    return render_template('instagram.html', info = info, mInfo = mInfo)
 
 @app.route("/linkedin")
 def linkedin():
