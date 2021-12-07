@@ -125,7 +125,7 @@ def mediaInfo():
     params = defines.getCreds()
     endpointParams = dict()
     endpointParams['access_token'] = params['page_access_token']
-    endpointParams['fields'] = 'business_discovery.username(' + params['ig_username'] + '){media{comments_count,like_count}}'
+    endpointParams['fields'] = 'business_discovery.username(' + params['ig_username'] + '){media{comments_count,like_count,timestamp}}'
     url = params['endpoint_base'] + params['ig_page_id']
     response = makeApiCall(url, endpointParams, params['debug'])
     info = []
@@ -151,38 +151,4 @@ def postInsights( id ):
     return insights
 
 
-
-id = instagramPageId()
-print('Page id: ' + str(id))
-
-followers = igFollowers()
-print('Followers: ' + str(followers))
-
-posts = igPostCount()
-print('Number of Posts: ' + str(posts))
-
-imp = impressions()
-print("Impressions: ")
-print("Day:" + str(imp['day']))
-print("Week:" + str(imp['week']))
-print("Last 28 Days:" + str(imp['days_28']))
-
-r = reach()
-print("Reach: ")
-print("Day:" + str(r['day']))
-print("Week:" + str(r['week']))
-print("Last 28 Days:" + str(r['days_28']))
-
-views = profileViews()
-print("Profile views in the past day: " + str(views))
-
 info = mediaInfo()
-print("Media Ids:")
-for id in info:
-    print("Id: " + str(id['id']) + " Like Count: " + str(id['like_count']) + " Comment Count: " + str(id['comments_count']))
-
-insights = postInsights(info[0]['id'])
-print("Insights for post id " + info[0]['id'] + ": ")
-print("Impressions: " + str(insights['impressions']))
-print("Reach: " + str(insights['reach']))
-print("Engagement: " + str(insights['engagement']))
