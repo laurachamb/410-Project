@@ -28,7 +28,10 @@ def postIds():
     response = makeApiCall(url, endpointParams, params['debug'])
     ids = []
     for i in range(len(response['json_data']['data'])):
-        ids += [response['json_data']['data'][i]['id']]
+        d = dict()
+        d['id'] = response['json_data']['data'][i]['id']
+        d['timestamp'] = response['json_data']['data'][i]['created_time']
+        ids += [d]
     return ids
 
 
@@ -226,3 +229,5 @@ def longLivedAccessToken():
     url = params['endpoint_base'] + 'oauth/access_token'
     response = makeApiCall(url , endpointParams)
 
+ids = postIds()
+print(ids[0]['timestamp'])
