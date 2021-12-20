@@ -83,9 +83,6 @@ def instagram():
     info['avg_engagement'] /= 10
     return render_template('instagram.html', info = info, mInfo = mInfo)
 
-@app.route("/linkedin")
-def linkedin():
-    return 'under construction :D'
 
 @app.route("/twitter")
 def twitter():
