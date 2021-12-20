@@ -1,8 +1,22 @@
 import requests, json, defines
 
-# just a help function to make the api calls and put the data into a dictionary
-# the key json_data should be used to get the information from the get call
-# the key json_data_pretty should be used to print info, good for debugging
+# this function should be used to make any API call
+# input: url: the first part of the API url (usually consists of the creds['endpoint_base'] and any edges)
+#        endpointParams: and additional information like access_token or fields in a dictionary where the key is
+#        the correct name
+# output: dictionary with the json data returned by the API call
+# Example: If you wanted to get the API for the follower count you would make an API call to
+#          'https://graph.facebook.com/{graph-api-version}/{pageid}?fields=followers_count'
+# Input:
+#          url: https://graph.facebook.com/{graph-api-version}/{pageid}
+#          endpointParams: endpointParams['access_token'] = {your-access-token} (this is always needed)
+#                          endpointParams['fields'] = 'followers_count'
+# Output: response['json_data'] = {
+#                                   "followers_count": 1206,
+#                                   "id": "1503119803264962"
+#                                 }
+#       key 'json_data_pretty' can be used for debugging
+#       if printed it will show json data like above in nice formatting
 def makeApiCall(url, endpointParams, debug='no'):
     data = requests.get(url, endpointParams)
     response = dict()
@@ -17,6 +31,8 @@ def makeApiCall(url, endpointParams, debug='no'):
 
 # used to get the instagram business account id
 # not necessary to call more than once, this id is stored in the defines file
+# stored in ig_page_id key in getCreds() dictionary
+# Output: instagram business account id as a string
 def instagramPageId():
     params = defines.getCreds()
     endpointParams = dict()
@@ -27,7 +43,8 @@ def instagramPageId():
     return response['json_data']['instagram_business_account']['id']
 
 
-# returns the number of followers the account has (an integer)
+# Gets the number of followers for the client's instagram account
+# Output: number of followers as an integer
 def igFollowers():
     params = defines.getCreds()
     endpointParams = dict()
@@ -38,7 +55,8 @@ def igFollowers():
     return response['json_data']['followers_count']
 
 
-# returns the number of posts the account has (an integer)
+# Gets the number of posts the client's instagram account has
+# Output: The number of posts as an integer
 def igPostCount():
     params = defines.getCreds()
     endpointParams = dict()
@@ -49,9 +67,6 @@ def igPostCount():
     return response['json_data']['media_count']
 
 
-# FOR NEXT THREE FUNCTIONS: I am thinking of combining the three functions into one to make for less api calls
-# This would include a dictionary with keys impressions, reach, and profile views whose values are the dictionaries
-# returned by each function
 
 # Total number of times the IG User's IG Media have been viewed.
 # Includes ad activity generated through the API, Facebook ads interfaces, and the Promote feature.
@@ -150,5 +165,3 @@ def postInsights( id ):
     insights['engagement'] = response['json_data']['data'][2]['values'][0]['value']
     return insights
 
-
-info = mediaInfo()
