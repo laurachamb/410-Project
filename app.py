@@ -3,6 +3,12 @@ from facebook_interface import*
 from instagram_interface import*
 app = Flask(__name__)
 
+# Homepage: calls the index.html template and passes in a dictionary
+# info:
+#   Keys:
+#       followers: holds the sum of the followers across all platforms
+#       f_percent: holds the percentage of followers facebook has of followers across all platforms
+#       i_percent: holds the percentage of followers instagram has of followers across all platforms
 @app.route("/")
 def homepage():
     info = dict()
@@ -10,6 +16,38 @@ def homepage():
     info['f_percent'] = round(follower_count() / info['followers'] * 100, 1)
     info['i_percent'] = round(igFollowers() / info['followers'] * 100, 1)
     return render_template('index.html', info = info)
+
+# Facebook Dashboard: calls the facebook.html template and passes in a dictionary called info and a list called mInfo
+# info:
+#   Keys:
+#       followers: holds the number of facebook followers as an integer
+#       impressions: a dictionary with three keys hold the number of impressions over certain periods of time
+#                    Keys:
+#                       day: number impressions over the last day as an integer
+#                       week: number impressions over the last week as an integer
+#                       days_28: number impressions over the last 28 days as an integer
+#       views: a dictionary with three keys hold the number of page views over certain periods of time
+#                    Keys:
+#                       day: number page views over the last day as an integer
+#                       week: number page views over the last week as an integer
+#                       days_28: number page views over the last 28 days as an integer
+#       users: a dictionary with three keys hold the number of engaged users over certain periods of time
+#                    Keys:
+#                       day: number engaged users over the last day as an integer
+#                       week: number engaged users over the last week as an integer
+#                       days_28: number engaged users over the last 28 days as an integer
+#       pimpressions: a dictionary with three keys hold the number of post impressions over certain periods of time
+#                    Keys:
+#                       day: number post impressions over the last day as an integer
+#                       week: number post impressions over the last week as an integer
+#                       days_28: number post impressions over the last 28 days as an integer
+#       avg_likes: the average likes over the past 10 posts as an integer
+#       likes: a list of like counts for the past 10 posts
+# mInfo: a list containing 10 dictionaries of information for the past 10 posts
+#   Keys:
+#        id: id for that post
+#        timestamp: timestamp for that post
+
 @app.route("/facebook")
 def facebook():
     info = dict()
@@ -46,6 +84,37 @@ def facebook():
 
     return render_template('facebook.html', info = info, mInfo = mInfo)
 
+
+# Instagram Dashboard: calls the instagram.html template and passes in a dictionary called info and a list called mInfo
+# info:
+#   Keys:
+#       followers: holds the number of instagram followers as an integer
+#       posts: holds the number of instagram posts as an integer
+#       views: holds the number of daily instagram profile views as an integer
+#       impressions: a dictionary with three keys hold the number of impressions over certain periods of time
+#                    Keys:
+#                       day: number impressions over the last day as an integer
+#                       week: number impressions over the last week as an integer
+#                       days_28: number impressions over the last 28 days as an integer
+#       views: a dictionary with three keys hold the reach over certain periods of time
+#                    Keys:
+#                       day: reach over the last day as an integer
+#                       week: reach over the last week as an integer
+#                       days_28: reach over the last 28 days as an integer
+#       avg_likes: the average likes over the past 10 posts as an integer
+#       avg_comments: the average comments over the past 10 posts as an integer
+#       avg_impressions: the average impressions over the past 10 posts as an integer
+#       avg_reach: the average reach over the past 10 posts as an integer
+#       avg_engagement: the average engagement over the past 10 posts as an integer
+# mInfo: a list containing 10 dictionaries of information for the past 10 posts
+#   Keys:
+#        like_count: number of likes for that post as an integer
+#        comments_count: number of comments for that post as an integer
+#        insights: a dictionary storing that posts insights
+#           Keys:
+#               impressions: the number of impressions that post has
+#               reach: reach that post has
+#               engagement: the amount of engagement that post has
 @app.route("/instagram")
 def instagram():
     info = dict()
