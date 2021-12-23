@@ -1,6 +1,9 @@
 from flask import Flask, render_template
 from facebook_interface import*
 from instagram_interface import*
+from twitter_interface import*
+
+
 app = Flask(__name__)
 
 # Homepage: calls the index.html template and passes in a dictionary
@@ -155,4 +158,17 @@ def instagram():
 
 @app.route("/twitter")
 def twitter():
-    return 'under construction :D'
+
+    finalList = []
+    finalList = start_program()
+
+    info1 = addData(finalList[1])
+    info2 = addData(finalList[2])
+    info3 = addData(finalList[3])
+
+    strList = []
+    strList = strMonths(finalList)
+    # change this soon
+    username = 'impactfinctr'
+
+    return render_template('twitter.html', finalList=finalList,info1=info1,info2=info2,info3=info3,strList=strList, username=username)
