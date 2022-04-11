@@ -20,9 +20,9 @@ import json
 #       ig_page_id: busniess account id for instagram account, stored so we don't have to make that API call multiple times
 def getCreds():
     creds = dict()
-    creds['page_access_token'] = 'EAAI3fQapZATcBAB9NE62dZAleMLi7wYC5qPoZAl0EOKYmffOkwTLKlVeOLoKqQTOvusuhVWTwwVAdiVWGDMN1aZCzXI2CZCFQZBqByrYJ6AdPLpItmAY4dOlHtTuc1TtxAS1ulL6JsO1qHUE8qwYIiV3aXwT6XHRGehT7H1ZBj5nzpOSyNniYpg'
-    creds['client_id'] = '623960075625783'
-    creds['client_secret'] = '477731da42359c41e259e7706ea21a5a'
+    creds['page_access_token'] = ''
+    creds['client_id'] = ''
+    creds['client_secret'] = ''
     creds['ig_username'] = 'impactfinctr'
 
     creds['graph_domain'] = 'https://graph.facebook.com/'
